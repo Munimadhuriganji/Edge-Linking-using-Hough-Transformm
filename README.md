@@ -28,64 +28,60 @@ Apply hough transform and show the detected edge on the original image
 Developed By : GANJI MUNI MADHURI
 Register Number : 212223230060
 ```
-```Python
-
-# Read image and convert it to grayscale image
+```
 import cv2
 import numpy as np
-r=cv2.imread('catt.jpg',-1)
-gray=cv2.cvtColor(r,cv2.COLOR_BGR2GRAY)
-img = cv2.GaussianBlur(gray,(3,3),0)
-cv2.imshow('origianl',r)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-cv2.imshow('gray',gray)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+import matplotlib.pyplot as plt
+image = cv2.imread('Fish.jpg')  # Replace with your image path
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+edges = cv2.Canny(gray_image, 50, 150, apertureSize=3)
+lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=100, minLineLength=50, maxLineGap=10)
 
+# Draw the lines on the original image
+output_image = image.copy()
 
-# Find the edges in the image using canny detector and display
-canny_edges = cv2.Canny(img, 50, 120)
-cv2.imshow('canny',canny_edges)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+if lines is not None:
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(output_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+plt.figure(figsize=(12, 12))
 
+# Input Image and Grayscale Image
+plt.subplot(2, 2, 1)
+plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+plt.title('Input Image')
+plt.axis('off')
+plt.subplot(2, 2, 2)
+plt.imshow(gray_image, cmap='gray')
+plt.title('Grayscale Image')
+plt.axis('off')
 
-# Detect points that form a line using HoughLinesP
-lines =cv2.HoughLinesP(canny_edges, 1, np.pi/180,threshold = 15, minLineLength =5 ,
-maxLineGap = 7)
+# Canny Edge Detection Output
+plt.subplot(2, 2, 3)
+plt.imshow(edges, cmap='gray')
+plt.title('Canny Edge Detector Output')
+plt.axis('off')
 
+# Hough Transform Result
+plt.subplot(2, 2, 4)
+plt.imshow(cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB))
+plt.title('Hough Transform - Line Detection')
+plt.axis('off')
 
-
-# Draw lines on the image
-for line in lines:
- x1,y1,x2,y2 = line[0]
- cv2.line(r, (x1,y1),(x2,y2),(255,0,0),3)
-
-
-
-# Display the result
-cv2.imshow('hough_detected',r)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-
-
+# Display all results
+plt.show()
 ```
+
+
+
+
 ## Output
 
-### Input image and grayscale image
-![image](https://github.com/YendluriChandana/Edge-Linking-using-Hough-Transformm/assets/139842204/7472aed6-015c-4edc-a2f4-cb69115cdcf2)
-![image](https://github.com/YendluriChandana/Edge-Linking-using-Hough-Transformm/assets/139842204/628ccfe0-2c2f-427e-a85e-64fcce137e38)
+![image](https://github.com/user-attachments/assets/9b769e4c-c4c0-4922-9f94-c6565a9a98b2)
+![image](https://github.com/user-attachments/assets/60989b5e-f0af-4590-95f9-4449cc65c8cd)
+![image](https://github.com/user-attachments/assets/3aa5e7f5-fcdb-4c0b-8ec1-ae0224f4e774)
+![image](https://github.com/user-attachments/assets/e9acd691-2baa-4538-8eb3-1cfc9cb8f32e)
 
-
-### Canny Edge detector output
-![image](https://github.com/YendluriChandana/Edge-Linking-using-Hough-Transformm/assets/139842204/afe13819-3676-4f81-9791-8eca121ad802)
-
-
-
-### Display the result of the Hough transform
-![image](https://github.com/YendluriChandana/Edge-Linking-using-Hough-Transformm/assets/139842204/ccc07ce5-84ae-4c39-b59f-c5bda6a93383)
 
 
 
